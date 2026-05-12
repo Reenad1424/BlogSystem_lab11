@@ -45,4 +45,9 @@ public class CommentController {
     public ResponseEntity<?> getByPost(@PathVariable Integer postId) {
         return ResponseEntity.status(200).body(commentService.getCommentsByPostId(postId));
     }
+    @GetMapping("/count/{postId}")
+    public ResponseEntity<?> getCommentCount(@PathVariable Integer postId) {
+        Integer count = commentService.getCommentCount(postId);
+        return ResponseEntity.status(200).body(new ApiResponse("Total comments for this post: " + count));
+    }
 }
