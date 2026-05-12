@@ -2,7 +2,6 @@ package org.example.blogsystem_lab11.Service;
 
 import lombok.RequiredArgsConstructor;
 import org.example.blogsystem_lab11.Api.ApiException;
-import org.example.blogsystem_lab11.Model.Category;
 import org.example.blogsystem_lab11.Model.Comment;
 import org.example.blogsystem_lab11.Repository.CommentRepository;
 import org.example.blogsystem_lab11.Repository.PostRepository;
@@ -51,6 +50,13 @@ public class CommentService {
         if (comments.isEmpty()) throw new ApiException("No comments found for this post");
         return comments;
     }
+    public Integer getCommentCount(Integer postId) {
+        if (postRepository.giveMePostById(postId) == null) {
+            throw new ApiException("Post not found to count its comments");
+        }
+        return commentRepository.giveMeCountCommentsByPostId(postId);
+    }
+
 }
 
 
