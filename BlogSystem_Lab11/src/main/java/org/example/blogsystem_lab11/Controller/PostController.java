@@ -68,6 +68,10 @@ public class PostController {
     public ResponseEntity<?> search(@PathVariable String keyword) {
         return ResponseEntity.status(200).body(postService.searchPosts(keyword));
     }
+    @GetMapping("/latest")
+    public ResponseEntity<?> getLatestPosts() {
+        return ResponseEntity.status(200).body(postService.getLatestPosts());
+    }
 
 
 
