@@ -20,16 +20,16 @@ public class PostService {
     public List<Post> getAll() { return postRepository.findAll(); }
 
     public void addPost(Post post) {
-        if (userRepository.findUserById(post.getUserId()) == null) throw new ApiException("User ID not found");
-        if (categoryRepository.givMeCategoryById(post.getCategoryId()) == null) throw new ApiException("Category ID not found");
+        if (userRepository.giveMeUserById(post.getUserId()) == null) throw new ApiException("User ID not found");
+        if (categoryRepository.giveMeCategoryById(post.getCategoryId()) == null) throw new ApiException("Category ID not found");
         postRepository.save(post);
     }
 
     public void updatePost(Integer id, Post post) {
         Post old = postRepository.giveMePostById(id);
         if (old == null) throw new ApiException("Post not found");
-        if (userRepository.findUserById(post.getUserId()) == null) throw new ApiException("User ID not found");
-        if (categoryRepository.givMeCategoryById(post.getCategoryId()) == null) throw new ApiException("Category ID not found");
+        if (userRepository.giveMeUserById(post.getUserId()) == null) throw new ApiException("User ID not found");
+        if (categoryRepository.giveMeCategoryById(post.getCategoryId()) == null) throw new ApiException("Category ID not found");
 
         old.setTitle(post.getTitle());
         old.setContent(post.getContent());
@@ -46,7 +46,7 @@ public class PostService {
 
     //Extra
     public List<Post> getPostsByUserId(Integer userId) {
-        if (userRepository.findUserById(userId) == null) throw new ApiException("User not found");
+        if (userRepository.giveMeUserById(userId) == null) throw new ApiException("User not found");
         List<Post> posts = postRepository.giveMeAllByUserId(userId);
         if (posts.isEmpty())
             throw new ApiException("No posts found for this user");
@@ -54,7 +54,7 @@ public class PostService {
     }
 
     public List<Post> getPostsByCategoryId(Integer categoryId) {
-        if (categoryRepository.givMeCategoryById(categoryId) == null)
+        if (categoryRepository.giveMeCategoryById(categoryId) == null)
             throw new ApiException("Category not found");
         List<Post> posts = postRepository.givMeAllByCategoryId(categoryId);
         if (posts.isEmpty())
@@ -81,4 +81,15 @@ public class PostService {
         if (posts.isEmpty())
             throw new ApiException("No posts match your search");
         return posts;
-    }}
+    }
+    public List<Post> getLatestPosts() {
+        List<Post> posts = postRepository.giveMeAllOrderByPublishDateDesc();
+        if (posts.isEmpty()) {
+            throw new ApiException("No posts found");
+        }
+        return posts.stream().limit(5).toList();
+    }
+
+
+
+}
