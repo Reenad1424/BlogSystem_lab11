@@ -29,4 +29,8 @@ public interface PostRepository extends JpaRepository<Post,Integer> {
 
     @Query("select p from Post p where p.content like %?1%")
     List<Post> giveMeByContent(String keyword);
+
+    @Query("select p from Post p order by p.publishDate desc")
+    List<Post> giveMeAllOrderByPublishDateDesc();
+
 }
